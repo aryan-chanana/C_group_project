@@ -15,13 +15,17 @@ struct vehicle{
 };
 
 struct vehicle user;
+int user_counter = 0;
 
 int entry();
+int entry_receipt();
 int two_wheeler();
 int four_wheeler();
 int commercial();
 int user_Details();
-int entry_receipt();
+int exiter();
+FILE *data;
+
 
 int main() {
     int start;
@@ -35,7 +39,7 @@ int main() {
         entry();
     }
     else if (start==2) {
-        //exit();
+        searcher();
     }
     return 0;
 }
@@ -52,11 +56,13 @@ int entry() {
         two_wheeler();
     }
     else if (user.type==2) {
-        //four_wheeler();
+        four_wheeler();
     }
     else if (user.type==3) {
-        //commercial();
+        commercial();
     }
+    user_counter+=1;
+    //printf("Spaces left = %d",user_counter);
 }
 
 int two_wheeler() {
@@ -72,8 +78,34 @@ int two_wheeler() {
     entry_receipt();
 }
 
+int four_wheeler() {
+    int sub;
+    printf("\n Cost is Rs. 30/hr Each\n");
+    printf("Select sub-category\n");
+    printf("1. Mirco\n");
+    printf("2. Sedan\n");
+    printf("3. SUV: ");
+    scanf("%d",&sub);
+    user_Details();
+    printf("Here is your Entry receipt...\n\n");
+    entry_receipt();
+}
+
+int commercial() {
+    int sub;
+    printf("\n Cost is Rs. 15/hr Each\n");
+    printf("Select sub-category\n");
+    printf("1. Truck\n");
+    printf("2. Bus\n");
+    printf("3. Tempo: ");
+    scanf("%d",&sub);
+    user_Details();
+    printf("Here is your Entry receipt...\n\n");
+    entry_receipt();
+}
+
 int user_Details() {
-    //char name[20], contact[10], vehicle_no[10], model[20];
+    data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details.txt","a");
     printf("\nEnter name: ");
     scanf("%s",user.name);
     printf("Enter contact no: ");
@@ -82,6 +114,13 @@ int user_Details() {
     scanf("%s",user.vehicle_no);
     printf("Enter model: ");
     scanf("%s",user.model);
+    /*
+    fprintf(data,"Owner name: %s\n",user.name);
+    fprintf(data,"Owner contact no: %s\n",user.contact_no);
+    fprintf(data,"Vehicle no: %s\n",user.vehicle_no);
+    fprintf(data,"Vehicle model: %s\n",user.model);
+    */
+    fwrite (&user, sizeof(struct vehicle), 1, data);
 }
 
 int entry_receipt() {
@@ -95,3 +134,23 @@ int entry_receipt() {
     printf("Vehicle model: %s\n",user.model);
     printf("***************************************");
 }
+
+int searcher() {
+    char num;
+    data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details.txt","r");
+    //fscanf(data,"%s",&num);
+    //printf("the value is %s",num);
+    while(fread(&input, sizeof(struct person), 1, data))
+        printf ("id = %d name = %s %s\n", input.id,
+        input.fname, input.lname);
+}
+
+int exiter() {
+    char vehicle[100];
+    printf("Enter vehicle no: ");
+    scanf("%s",vehicle);
+    printf("Details are as follows %s",vehicle);
+}
+
+
+// https://www.geeksforgeeks.org/readwrite-structure-file-c/
