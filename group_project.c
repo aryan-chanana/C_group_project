@@ -31,6 +31,7 @@ int user_Details();
 int exiter();
 int time_difference();
 FILE *data;
+FILE *backlog;
 int global_hour;
 int global_min;
 int global_sec;
@@ -178,6 +179,7 @@ int entry_receipt() {
 
 int searcher(char vehicle_details_matcher[100]) {
     data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details2.txt","r");
+    backlog = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\backlog.txt","a");
     time_t t;
     time(&t);
     //time_t seconds;
@@ -206,6 +208,7 @@ int searcher(char vehicle_details_matcher[100]) {
             printf("You have to pay Rs.%d\n",global_cost);
             printf("THANKYOU! PLEASE VISIT AGAIN.\n");
             printf("***************************************");
+            fwrite(&user, sizeof(struct vehicle), 1, backlog);
             deletespecific(vehicle_details_matcher);
             break;
         }
