@@ -102,6 +102,7 @@ int four_wheeler() {
     printf("1. Mirco (Rs. 20/hr)\n");
     printf("2. Sedan (Rs. 25/hr)\n");
     printf("3. SUV (Rs. 30/hr): ");
+    scanf("%d",&sub);
 
     if (sub==1) {
         user.cost=20;
@@ -113,7 +114,6 @@ int four_wheeler() {
         user.cost=30;
     }
 
-    scanf("%d",&sub);
     user_Details();
     printf("Here is your Entry receipt...\n\n");
     entry_receipt();
