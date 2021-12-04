@@ -19,6 +19,7 @@ struct vehicle{
 };
 
 struct vehicle user;
+struct vehicle user_rewrite[1000];
 int user_counter = 0;
 
 int entry();
@@ -34,6 +35,7 @@ int global_hour;
 int global_min;
 int global_sec;
 int global_cost;
+
 
 
 int main() {
@@ -140,7 +142,7 @@ int commercial() {
 }
 
 int user_Details() {
-    data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details.txt","a");
+    data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details2.txt","a");
     printf("\nEnter name: ");
     scanf("%s",user.name);
     printf("Enter contact no: ");
@@ -175,7 +177,7 @@ int entry_receipt() {
 }
 
 int searcher(char vehicle_details_matcher[100]) {
-    data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details.txt","r");
+    data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details2.txt","r");
     time_t t;
     time(&t);
     //time_t seconds;
@@ -203,6 +205,7 @@ int searcher(char vehicle_details_matcher[100]) {
             printf("Vehicle model: %s\n",user.model);
             printf("You have to pay Rs.%d\n",global_cost);
             printf("***************************************");
+            deletespecific(vehicle_details_matcher);
             break;
         }
     }
@@ -227,3 +230,30 @@ int time_difference() {
     global_min=timeStruct->tm_min;
     global_sec=timeStruct->tm_sec;
 }
+
+int t=0;
+void readdata()
+{
+    int i=0;
+
+    data=fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details2.txt","r");
+    while(fread(&user_rewrite[i],sizeof(struct vehicle),1,data)==1)
+    {
+        i++;
+        t++;
+    }
+    fclose(data);
+}
+void deletespecific(char vehicle_details_matcher[100])
+{
+    readdata();
+    data=fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details2.txt","w");
+    for (int w=0;w<t;w++)
+    {
+        if(strcmp(user_rewrite->vehicle_no, vehicle_details_matcher)==1)
+        {
+            fwrite(&user_rewrite[w],sizeof(user_rewrite[w]),1,data);
+        }
+    }
+    fclose(data);
+ }
