@@ -204,6 +204,7 @@ int searcher(char vehicle_details_matcher[100]) {
             printf("Vehicle no: %s\n",user.vehicle_no);
             printf("Vehicle model: %s\n",user.model);
             printf("You have to pay Rs.%d\n",global_cost);
+            printf("THANKYOU! PLEASE VISIT AGAIN.\n");
             printf("***************************************");
             deletespecific(vehicle_details_matcher);
             break;
@@ -250,7 +251,7 @@ void deletespecific(char vehicle_details_matcher[100])
     data=fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details2.txt","w");
     for (int w=0;w<t;w++)
     {
-        if(strcmp(user_rewrite->vehicle_no, vehicle_details_matcher)==1)
+        if(strcmp(user_rewrite[w].vehicle_no, vehicle_details_matcher)==1)
         {
             fwrite(&user_rewrite[w],sizeof(user_rewrite[w]),1,data);
         }
