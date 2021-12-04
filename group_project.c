@@ -62,6 +62,7 @@ int entry() {
     printf("2. Four wheeler\n");
     printf("3. Commercial Transport Vehicle: ");
     scanf("%d",&user.type);
+    printf("\n");
     if (user.type==1){
         two_wheeler();
     }
@@ -77,13 +78,19 @@ int entry() {
 
 int two_wheeler() {
     int sub;
-    printf("\n Cost is Rs. 10/hr Each\n");
     printf("Select sub-category\n");
-    printf("1. Cylce\n");
-    printf("2. Scooty\n");
-    printf("3. Bike: ");
+    printf("1. Cylce (Rs. 5/hr)\n");
+    printf("2. Scooty (Rs. 10/hr)\n");
+    printf("3. Bike (Rs. 10/hr): ");
     scanf("%d",&sub);
-    user.cost=10;
+
+    if (sub==1) {
+        user.cost=5;
+    }
+    else {
+        user.cost=10;
+    }
+
     user_Details();
     printf("Here is your Entry receipt...\n\n");
     entry_receipt();
@@ -91,12 +98,21 @@ int two_wheeler() {
 
 int four_wheeler() {
     int sub;
-    printf("\n Cost is Rs. 30/hr Each\n");
     printf("Select sub-category\n");
-    printf("1. Mirco\n");
-    printf("2. Sedan\n");
-    printf("3. SUV: ");
-    user.cost=30;
+    printf("1. Mirco (Rs. 20/hr)\n");
+    printf("2. Sedan (Rs. 25/hr)\n");
+    printf("3. SUV (Rs. 30/hr): ");
+
+    if (sub==1) {
+        user.cost=20;
+    }
+    else if (sub==2) {
+        user.cost=25;
+    }
+    else {
+        user.cost=30;
+    }
+
     scanf("%d",&sub);
     user_Details();
     printf("Here is your Entry receipt...\n\n");
@@ -105,13 +121,19 @@ int four_wheeler() {
 
 int commercial() {
     int sub;
-    printf("\n Cost is Rs. 15/hr Each\n");
     printf("Select sub-category\n");
-    printf("1. Truck\n");
-    printf("2. Bus\n");
-    printf("3. Tempo: ");
+    printf("1. Tempo (Rs. 15/hr)\n");
+    printf("2. Truck (Rs. 35/hr)\n");
+    printf("3. Bus (Rs. 35/hr): ");
     scanf("%d",&sub);
-    user.cost=15;
+
+    if (sub==1) {
+        user.cost=15;
+    }
+    else {
+        user.cost=35;
+    }
+
     user_Details();
     printf("Here is your Entry receipt...\n\n");
     entry_receipt();
@@ -154,6 +176,8 @@ int entry_receipt() {
 
 int searcher(char vehicle_details_matcher[100]) {
     data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details.txt","r");
+    time_t t;
+    time(&t);
     //time_t seconds;
     //struct tm *timeStruct;
     //seconds = time(NULL);
@@ -164,8 +188,6 @@ int searcher(char vehicle_details_matcher[100]) {
     time_difference();
     while(fread(&user, sizeof(struct vehicle), 1, data)) {
         if (strcmp(user.vehicle_no,vehicle_details_matcher)==0) {
-            printf("Time earlier = %d %d %d\n",user.hour, user.min, user.sec);
-            printf("Time now = %d %d %d\n",global_hour, global_min, global_sec);
             int difference=global_hour-user.hour;
             if (difference<1) {
                 global_cost=user.cost*1;
@@ -173,8 +195,14 @@ int searcher(char vehicle_details_matcher[100]) {
             else {
                 global_cost=user.cost*difference;
             }
-            printf("Cost=%d",global_cost);
-            printf("%s\n%s\n%s\n%s\n", user.model, user.vehicle_no, user.name, user.contact_no);
+            printf("***************************************\n");
+            printf("%s\n", ctime(&t));
+            printf("Owner name: %s\n",user.name);
+            printf("Owner contact no: %s\n",user.contact_no);
+            printf("Vehicle no: %s\n",user.vehicle_no);
+            printf("Vehicle model: %s\n",user.model);
+            printf("You have to pay Rs.%d\n",global_cost);
+            printf("***************************************");
             break;
         }
     }
