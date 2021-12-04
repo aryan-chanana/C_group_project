@@ -39,7 +39,8 @@ int main() {
         entry();
     }
     else if (start==2) {
-        searcher();
+        //searcher();
+        exiter();
     }
     return 0;
 }
@@ -135,22 +136,21 @@ int entry_receipt() {
     printf("***************************************");
 }
 
-int searcher() {
-    char num;
+int searcher(char vehicle[100]) {
     data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details.txt","r");
     //fscanf(data,"%s",&num);
     //printf("the value is %s",num);
-    while(fread(&input, sizeof(struct person), 1, data))
-        printf ("id = %d name = %s %s\n", input.id,
-        input.fname, input.lname);
+    while(fread(&user, sizeof(struct vehicle), 1, data)) {
+        if (strcmp(user.vehicle_no,vehicle)==0) {
+            printf("%s\n%s\n%s\n%s\n", user.model, user.vehicle_no, user.name, user.contact_no);
+            break;
+        }
+    }
 }
 
 int exiter() {
     char vehicle[100];
     printf("Enter vehicle no: ");
     scanf("%s",vehicle);
-    printf("Details are as follows %s",vehicle);
+    searcher(vehicle);
 }
-
-
-// https://www.geeksforgeeks.org/readwrite-structure-file-c/
