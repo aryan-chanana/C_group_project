@@ -12,6 +12,10 @@ struct vehicle{
     char vehicle_no[15];
     char name[20];
     char contact_no[15];
+    int hour;
+    int min;
+    int sec;
+    int cost;
 };
 
 struct vehicle user;
@@ -24,7 +28,12 @@ int four_wheeler();
 int commercial();
 int user_Details();
 int exiter();
+int time_difference();
 FILE *data;
+int global_hour;
+int global_min;
+int global_sec;
+int global_cost;
 
 
 int main() {
@@ -74,6 +83,7 @@ int two_wheeler() {
     printf("2. Scooty\n");
     printf("3. Bike: ");
     scanf("%d",&sub);
+    user.cost=10;
     user_Details();
     printf("Here is your Entry receipt...\n\n");
     entry_receipt();
@@ -86,6 +96,7 @@ int four_wheeler() {
     printf("1. Mirco\n");
     printf("2. Sedan\n");
     printf("3. SUV: ");
+    user.cost=30;
     scanf("%d",&sub);
     user_Details();
     printf("Here is your Entry receipt...\n\n");
@@ -100,6 +111,7 @@ int commercial() {
     printf("2. Bus\n");
     printf("3. Tempo: ");
     scanf("%d",&sub);
+    user.cost=15;
     user_Details();
     printf("Here is your Entry receipt...\n\n");
     entry_receipt();
@@ -121,7 +133,11 @@ int user_Details() {
     fprintf(data,"Vehicle no: %s\n",user.vehicle_no);
     fprintf(data,"Vehicle model: %s\n",user.model);
     */
-    fwrite (&user, sizeof(struct vehicle), 1, data);
+    time_difference();
+    user.hour=global_hour;
+    user.min=global_min;
+    user.sec=global_sec;
+    fwrite(&user, sizeof(struct vehicle), 1, data);
 }
 
 int entry_receipt() {
@@ -136,12 +152,28 @@ int entry_receipt() {
     printf("***************************************");
 }
 
-int searcher(char vehicle[100]) {
+int searcher(char vehicle_details_matcher[100]) {
     data = fopen("D:\\Temp. Folder\\Programming\\C\\ok\\Entry_details.txt","r");
+    //time_t seconds;
+    //struct tm *timeStruct;
+    //seconds = time(NULL);
+    //timeStruct = localtime(&seconds);
+
     //fscanf(data,"%s",&num);
     //printf("the value is %s",num);
+    time_difference();
     while(fread(&user, sizeof(struct vehicle), 1, data)) {
-        if (strcmp(user.vehicle_no,vehicle)==0) {
+        if (strcmp(user.vehicle_no,vehicle_details_matcher)==0) {
+            printf("Time earlier = %d %d %d\n",user.hour, user.min, user.sec);
+            printf("Time now = %d %d %d\n",global_hour, global_min, global_sec);
+            int difference=global_hour-user.hour;
+            if (difference<1) {
+                global_cost=user.cost*1;
+            }
+            else {
+                global_cost=user.cost*difference;
+            }
+            printf("Cost=%d",global_cost);
             printf("%s\n%s\n%s\n%s\n", user.model, user.vehicle_no, user.name, user.contact_no);
             break;
         }
@@ -153,4 +185,17 @@ int exiter() {
     printf("Enter vehicle no: ");
     scanf("%s",vehicle);
     searcher(vehicle);
+}
+
+int time_difference() {
+    time_t seconds;
+    struct tm *timeStruct;
+
+    seconds = time(NULL);
+
+    timeStruct = localtime(&seconds);
+
+    global_hour=timeStruct->tm_hour;
+    global_min=timeStruct->tm_min;
+    global_sec=timeStruct->tm_sec;
 }
