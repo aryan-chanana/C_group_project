@@ -96,7 +96,7 @@ int coupon() {
         printf("Cost After discount = Rs %.2f",total_cost);
     }
     else if (strcmp(user.coupon,"SAVE20")==0) {
-        discount_price=cost_before_discount*0.1;
+        discount_price=cost_before_discount*0.2;
         total_cost*=0.8;
         printf("Cost After discount = Rs %.2f",total_cost);
     }
